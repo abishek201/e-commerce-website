@@ -68,7 +68,7 @@ export default function CartPage() {
                 display: "flex", 
                 justifyContent: "space-between", 
                 alignItems: "center",
-                borderBottom: "1px solid #ccc",
+                borderBottom: "1px solid #8f5d5dff",
                 padding: "1rem 0"
               }}
             >
