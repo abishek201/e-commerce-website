@@ -23,12 +23,17 @@ export function CartProvider({ children }: { children: React.ReactNode }) { //??
   // 2. State array setup matching correct naming
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
-  useEffect(() => {
-    const savedCart = localStorage.getItem("cart");         // this effect used to get items from local storage and send it to cart items 
-    if (savedCart) {
+ useEffect(() => {
+  const savedCart = localStorage.getItem("cart");
+  if (savedCart && savedCart !== "undefined") {
+    try {
       setCartItems(JSON.parse(savedCart));
+    } catch (e) {
+      console.error("Failed to parse cart from localStorage", e);
+      localStorage.removeItem("cart"); // Clean up corrupted data
     }
-  }, []);
+  }
+}, []);
 
   useEffect(() => {
     
@@ -51,24 +56,28 @@ export function CartProvider({ children }: { children: React.ReactNode }) { //??
   };
 
 
-  const removeFromCart = (productId: number) => {
-    setCartItems((prevItems) => {
-      const existingItem = prevItems.find((item) => item.product.id === productId);  // checks if the product aleredy exist in the cart
-      if (existingItem && existingItem.quantity > 1) {    // if exist decrease the quantity by one 
-        return prevItems.map((item) =>
-          item.product.id === productId
-            ? { ...item, quantity: item.quantity - 1 }  
-            : item
-        )
-      }
-       const updated = prevItems.filter((item)=> item.product.id !== productId)
-       if(updated.length === 0)
-        return updated;
+ const removeFromCart = (productId: number | string) => {
+  setCartItems((prevItems) => {
+    // 1. Convert IDs to String to avoid string vs number bugs
+    const existingItem = prevItems.find(
+      (item) => String(item.product.id) === String(productId)
+    );
 
-    });
-   
-  };
+    // 2. If quantity > 1, decrement quantity
+    if (existingItem && existingItem.quantity > 1) {
+      return prevItems.map((item) =>
+        String(item.product.id) === String(productId)
+          ? { ...item, quantity: item.quantity - 1 }
+          : item
+      );
+    }
 
+    // 3. If quantity is 1, remove only this product from array
+    return prevItems.filter(
+      (item) => String(item.product.id) !== String(productId)
+    );
+  });
+};
   
 
   const clearCart = () => {

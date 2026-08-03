@@ -3,6 +3,7 @@
 import { useCart } from "@/app/context/CartContext";
 import Link from "next/link";
 import { useState } from "react";
+import "./Cart.css";
 
 export default function CartPage() {
   const { cartItems, removeFromCart, clearCart } = useCart();
@@ -10,13 +11,11 @@ export default function CartPage() {
   const [checkoutMessage, setCheckoutMessage] = useState("");
 
   const totalPrice = cartItems?.reduce(
-    (total, item) => total + item.product.price * item.quantity,0       // equation to add total amount of cart value
-    
+    (total, item) => total + item.product.price * item.quantity,
+    0
   );
- 
-   const handleCheckout = async () => {       // async function to handle the checkout process
 
-
+  const handleCheckout = async () => {
     if (!cartItems.length) {
       setCheckoutMessage("Your cart is empty.");
       return;
@@ -27,19 +26,20 @@ export default function CartPage() {
 
     try {
       const response = await fetch("/api/checkout", {
-        method: "POST",                                        // post request to send items cart products and total price
+        method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cartItems, totalPrice }), //??
+        body: JSON.stringify({ cartItems, totalPrice }),
       });
 
       const data = await response.json();
 
-      if (!response.ok) { throw new Error(data.error || "Failed to place order");  // if any error
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to place order");
       }
 
-      setCheckoutMessage(`Order placed successfully! ID: ${data.orderId}`);         // if order is success
-      alert("order is placed")
-      clearCart();        // clearing the after placing the order
+      setCheckoutMessage(`Order placed successfully! ID: ${data.orderId}`);
+      alert("order is placed");
+      clearCart();
     } catch (error: any) {
       setCheckoutMessage(error.message || "Something went wrong");
     } finally {
@@ -47,95 +47,59 @@ export default function CartPage() {
     }
   };
 
-  
-
-
   return (
     <div style={{ padding: "2rem", maxWidth: "800px", margin: "0 auto" }}>
       <h1>Your Shopping Cart</h1>
-      <Link href="/products" style={{ color: "#0070f3", textDecoration: "underline" }}>
+      <Link
+        href="/products"
+        style={{ color: "#0070f3", textDecoration: "underline" }}
+      >
         ← Continue Shopping
       </Link>
 
-      {cartItems?.length === 0 ? (
+      {!cartItems || cartItems.length === 0 ? (
         <p style={{ marginTop: "2rem" }}>Your cart is empty.</p>
       ) : (
-        <div style={{ marginTop: "2rem" }}>
-          {(cartItems).map((item) => (
-            <div 
-              key={item.product.id} 
-              style={{ 
-                display: "flex", 
-                justifyContent: "space-between", 
-                alignItems: "center",
-                borderBottom: "1px solid #8f5d5dff",
-                padding: "1rem 0"
-              }}
-            >
-              <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-                <img src={item.product.image} alt={item.product.name} width={60} height={60} />
-                <div>
-                  <h3 style={{ margin: 0 }}>{item.product.name}</h3>
-                  <p style={{ margin: "0.25rem 0", color: "#666" }}>
-                    Quantity: {item.quantity} × ₹{item.product.price}
+        <>
+          <div style={{ marginTop: "2rem" }}>
+            {cartItems.map((item) => (
+              <div key={item.product.id} className="product-section">
+                <div className="product-img">
+                  <img src={item.product.image} height={100} width={100} alt={item.product.name}></img>
+                </div>
+                <div className="product-name">
+                  <h3>{item.product.name}</h3>
+                  <p>Quantity:{item.quantity}</p>
+                  <button
+                    className="remove-btn"
+                    onClick={() => removeFromCart(item.product.id)}
+                  >
+                    Remove
+                  </button>
+                </div>
+                <div className="price">
+                  <p>
+                    Price: {item.quantity} × ₹{item.product.price}
                   </p>
                 </div>
               </div>
-              
-              <button 
-                onClick={() => removeFromCart(item.product.id)}
-                style={{
-                  backgroundColor: "#ff4444",
-                  color: "white",
-                  border: "none",
-                  padding: "0.5rem 1.0rem",
-                  borderRadius: "4px",
-                  cursor: "pointer"
-                }}
-              >
-                Remove
-              </button>
-            </div>
-          ))}
+            ))}
+          </div>
 
-          <div style={{ marginTop: "2rem", textAlign: "right" }}>
+          <div>
             <h2>Grand Total: ₹{totalPrice}</h2>
-            
-            <div style={{ display: "flex", justifyContent: "flex-end", gap: "1rem", marginTop: "1rem" }}>
-              <button 
-                onClick={clearCart}
-                style={{ background: "none", border: "1px solid #ccc", padding: "0.5rem 1rem", cursor: "pointer" }}
-              >
-                Clear Cart
-              </button>
-             
+
+            <div className="clear-cart-btn">
+              <button onClick={clearCart}>Clear Cart</button>
             </div>
-            <div style={{ display: "flex", justifyContent: "flex-end", gap: "1rem", marginTop: "1rem" }}>
-              <button 
-               onClick={handleCheckout}
-               
-                style={{ background: "none", border: "1px solid #ccc", padding: "0.5rem 1rem", cursor: "pointer" }}
-              >
-                Checkout
+            <div className="checkout-btn">
+              <button onClick={handleCheckout} disabled={isCheckingOut}>
+                {isCheckingOut ? "Processing..." : "Checkout"}
               </button>
-              <div>
-                {checkoutMessage ? (
-              <p
-                style={{
-                  marginTop: "1rem",
-                  color: checkoutMessage.startsWith("Order placed") ? "green" : "#b91c1c",
-                }}
-              >
-                {checkoutMessage}
-              </p>
-            ) : null}
-
-              </div>
-
-             
+              <div>{checkoutMessage ? <p>{checkoutMessage}</p> : null}</div>
             </div>
           </div>
-        </div>
+        </>
       )}
     </div>
   );

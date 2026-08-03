@@ -1,0 +1,29 @@
+.product-section{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    justify-content: space-between;
+   
+}
+.checkout-area{
+  
+    justify-content:left;
+    align-items: center;
+
+}
+.product-name{
+     text-align:left;
+    margin-right: 300px;
+}
+.product-img{
+    border-color: 10px solid black;
+    border-radius: 10px;
+}
+.remove-btn{
+    background-color: rgb(216, 65, 65);
+    color: white;
+    border-radius: 30px;
+    height: 4.5vh;
+    text-align: center;
+    width: 10vh;
+}
