@@ -1,66 +1,66 @@
-"use client"
-import { mockproducts } from "../data/products"
-import '../css-components/productdetail.css'
-import { product as ProductType } from "@/app/types/product";
+"use client";
+
 import { useCart } from "@/app/context/CartContext";
-import Link from 'next/link';
-import { useState } from "react";
 
-interface Props{
-    product:ProductType;
-}
-
-export default function Productdetail({product}:Props){
+export default function Productdetail({ product }: { product: any }) {
   const {  cartItems, addToCart , removeFromCart  } = useCart();
 
   const curentcartitem = cartItems.find((item)=>item.product.id === product.id)
   const quantityincart = curentcartitem ? curentcartitem.quantity : 0;
- 
 
-    return(
-        <>
+  return (
+    <div className="product-detail-card">
+      <div className="product-image-container">
+        <img
+          src={product.image}
+          alt={product.name}
+          className="product-image"
+        />
+      </div>
 
-        <Link href="/Cart"> <div className="cart-icon">cart</div></Link>
-        <div className="image-side" >
-             <div className="image-box">
-            <img src={product.image} alt={product.name} height={2000} width={2000} />
+      <div className="product-info-container">
+        <div className="product-header">
+          <h1 className="product-title">{product.name}</h1>
+          <div className="product-price-tag">₹{product.price}</div>
+        </div>
+
+        <div className="divider"></div>
+
+        {product.description && (
+          <div className="product-description-section">
+            <h2 className="description-label">Description</h2>
+            <p className="product-description">{product.description}</p>
           </div>
-          <div className="detail-side">
-          <div className="prod-name"><h1>{product.name}</h1></div>
-          <div className="prod-price"><h3>${product.price}</h3></div>
-          <div className="prod-description"><h4>{product.description}</h4></div>
-          <div className="button-container">
-            <p>ADD TO CART:</p>
-          <button                                                                                                                                       
-          onClick={() => {
-          removeFromCart(product.id);
-          const isfind = cartItems.some((item)=>item.product.id === product.id)
-          if(!isfind){
-            alert(`${product.name} product is not  in cart`)
-          }else{
-            alert(`${product.name} product is removed`)
+        )}
 
-          }
-          
-        }}>-</button>
-          <span>{quantityincart}</span>
+       
+
+        <div className="quantity-section">
           <button
-          onClick={() => {
+            className="remove-from-cart-btn"
+            onClick={() => {
+              removeFromCart(product.id);
+              alert(`${product.name} removed from cart!`);
+            }}
+          >
+            Remove
+          </button>
+           <p className="qnt">Quantity: {quantityincart}</p>
+        </div>
+
+        <div className="action-area">
+          <button
+            className="add-to-cart-btn"
+            onClick={() => {
           addToCart(product);
           
           alert(`${product.name} added to cart!`);
-        }}>
-            +
+          }}
+          >
+            Add to Cart
           </button>
-          </div>
-          </div>
-          
         </div>
-        
-        </>
-    )
+      </div>
+    </div>
+  );
 }
-
-
-
-

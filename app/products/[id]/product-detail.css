@@ -1,0 +1,223 @@
+/* Page Layout */
+.product-page-wrapper {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: #1e293b;
+}
+
+/* Breadcrumbs & Navigation */
+.breadcrumb-nav {
+  margin-bottom: 1.5rem;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: color 0.2s ease;
+}
+
+.back-link:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+
+/* Main Card Container */
+.product-detail-card {
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .product-detail-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    padding: 2.5rem;
+    align-items: start;
+  }
+}
+
+/* Image Container */
+.product-image-container {
+  width: 100%;
+  height: 380px;
+  background-color: #f8fafc;
+  border: 1px solid #f1f5f9;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+.product-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.product-image-container:hover .product-image {
+  transform: scale(1.03);
+}
+
+/* Product Info Box */
+.product-info-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.product-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.product-title {
+  font-size: 1.85rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+  line-height: 1.25;
+}
+
+.product-price-tag {
+  display: inline-block;
+  background: #f1f5f9;
+  color: #0f172a;
+  font-size: 1.5rem;
+  font-weight: 700;
+  padding: 0.35rem 0.85rem;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.divider {
+  height: 1px;
+  background-color: #e2e8f0;
+  margin: 1.5rem 0;
+}
+
+/* Description */
+.product-description-section {
+  margin-bottom: 2rem;
+}
+
+.description-label {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748b;
+  margin: 0 0 0.5rem 0;
+  font-weight: 600;
+}
+
+.product-description {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #334155;
+  margin: 0;
+}
+
+/* Add to Cart Button */
+.action-area {
+  margin-top: auto;
+}
+
+.add-to-cart-btn {
+  width: 100%;
+  background-color: #0f172a;
+  color: #ffffff;
+  border: none;
+  padding: 0.95rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.add-to-cart-btn:hover {
+  background-color: #3a4962;
+  transform: translateY(-1px);
+}
+
+.add-to-cart-btn:active {
+  transform: translateY(0);
+}
+
+/* Not Found Screen */
+.not-found-card {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.not-found-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.not-found-card h2 {
+  font-size: 1.5rem;
+  color: #0f172a;
+  margin: 0 0 0.5rem 0;
+}
+
+.not-found-card p {
+  color: #64748b;
+  margin: 0 0 1.5rem 0;
+}
+
+.back-btn {
+  display: inline-block;
+  background-color: #0f172a;
+  color: #ffffff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+
+.back-btn:hover {
+  background-color: #1e293b;
+}
+.remove-from-cart-btn{
+     width: 25%;
+    
+  background-color: #9e4f3b;
+  color: #ffffff;
+  border: none;
+  padding: 0.85rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.remove-from-cart-btn:hover{
+     background-color: #c2633d;
+  transform: translateY(-1px);
+
+}
+.qnt{
+    margin: 10px;
+    font-size: 1.1rem;
+}
