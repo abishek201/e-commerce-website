@@ -1,7 +1,6 @@
 import mongoose from "mongoose"; //importing mongo db as mongoose 
 
 
-
 const MONGODB_URI = process.env.MONGODB_CONNECTION; // conecting env url
 
 if (!MONGODB_URI) {
