@@ -5,6 +5,8 @@ import '../css-components/hero.css';
 import { mockproducts } from '../data/products';
 import Coursel from './corsoul';
 import Footer from './footer';
+import cartLogo from '@/public/cart-logo.svg';
+import Image from 'next/image';
 import Link from 'next/link';
 
 export default function Hero() {
@@ -15,7 +17,7 @@ export default function Hero() {
         <>
             <div className="nav-container">
                 <ul>
-                   <Link href='/Cart'> <li>Cart</li></Link>
+                   <Link href='/Cart'> <li><Image src={cartLogo} alt="Brand logo" width={40} height={40} /></li></Link>
                     <li>BRAND NAME</li>
                     <li>LOGO</li>
                 </ul>

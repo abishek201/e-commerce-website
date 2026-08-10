@@ -2,7 +2,9 @@
 import { useState } from 'react';
 import { mockproducts } from '../data/products';
 import Link from 'next/link';
+import Image from 'next/image';
 import './page.css';
+
 
 export default function ProductsPage() {
     const [searchterm , setsearchterm] = useState("")
@@ -24,9 +26,9 @@ export default function ProductsPage() {
      <>
     <div className="nav-container">
                 <ul>
-                   <Link href='/Cart'> <li>Cart</li></Link>
+                   <Link href='/Cart'> <li><Image src="/public/cart-logo.svg" alt="Brand logo" width={40} height={40} /></li></Link>
                     <li>BRAND NAME</li>
-                    <li>LOGO</li>
+                    <li></li>
                 </ul>
             </div>
     <div className='search-box'>

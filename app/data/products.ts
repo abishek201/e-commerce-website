@@ -63,13 +63,13 @@ export const mockproducts: product[] = [
     name: "Sonata Analog Men's Watch",
     price: 35,
     description: "A classic minimalist timepiece featuring a polished gold-tone case and a clean white dial.\nDesigned with subtle gold markers and sleek hands for clear, elegant time-reading.\nFitted with a premium textured brown leather strap that offers comfort and style.\nAn ideal accessory that effortlessly transitions from formal meetings to casual evening wear.",
-    image: "/prod-10.jpg"
+    image: "/prod-10.png"
   },
   {
     id: 110,
     name: "Nike Calm Slides",
     price: 50,
     description: "Features a minimal, clean aesthetic crafted from a single piece of supportive foam.\nWater-friendly design with a contoured footbed that cradles and grips your foot securely.\nEquipped with a textured outsole pattern that offers durable traction on wet or dry surfaces.\nSubtly detailed with the iconic Nike Swoosh for a understated, cozy streetwear look.",
-    image: "/prod-10.jpg"
+    image: "/prod-11.png"
   }
 ]
