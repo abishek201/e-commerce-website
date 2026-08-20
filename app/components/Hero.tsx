@@ -1,8 +1,8 @@
 "use client"
 
-import { useEffect, useState } from 'react';
+
 import '../css-components/hero.css';
-import { mockproducts } from '../data/products';
+
 import Coursel from './corsoul';
 import Footer from './footer';
 import cartLogo from '@/public/cart-logo.svg';

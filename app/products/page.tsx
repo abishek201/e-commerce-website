@@ -42,7 +42,7 @@ export default function ProductsPage() {
         <Link  key={product.id} href={`products/${product.id}` }>
        <div className="card-container"  >
           <div className="image-wrapper">
-            <img src={product.image} alt={product.name} height={200} width={200} />
+            <Image src={product.image} alt={product.name} height={200} width={200} />
           </div>
           
           <div className="card-content">
@@ -59,7 +59,7 @@ export default function ProductsPage() {
     </div>
     ):(
         <div className="no-results">
-          <h3>No products found matching "{searchterm}"</h3>
+          <h3>No products found matching {searchterm}</h3>
           <p>Try checking your spelling or searching for something else.</p>
         </div>
       )}
