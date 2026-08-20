@@ -2,12 +2,12 @@
    
     align-items: center;
     justify-content: center;
-    color: azure;
+    color: rgb(243, 250, 250);
     align-content: space-around;
    
     height: 8vh;
   
-    background-color: rgb(230, 218, 218);
+    background-color: rgb(71, 59, 59);
 
 }
 ul{
@@ -28,7 +28,7 @@ height: 30vh;
 }
 h1{
     
-   color: rgb(3, 3, 3);
+   color: rgb(252, 245, 245);
 text-align: center;
 font-size: 8vh;
 margin-bottom: 10vh
