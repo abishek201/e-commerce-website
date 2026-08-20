@@ -1,41 +1,41 @@
-import mongoose from "mongoose"; //importing mongo db as mongoose 
+import mongoose from "mongoose";
 
-
-const MONGODB_URI = process.env.MONGODB_CONNECTION; // conecting env url
+const MONGODB_URI = process.env.MONGODB_URI;
 
 if (!MONGODB_URI) {
-  throw new Error("Please define the MONGODB_URI environment variable in .env.local"); // if any problem in url it show this message
+  throw new Error("Please define the MONGODB_URI environment variable inside .env.local");
 }
 
-let cached = (global as any).mongoose; // checks the mongo db connection is alerady is avaiable
+interface MongooseCache {
+  conn: typeof mongoose | null;
+  promise: Promise<typeof mongoose> | null;
+}
+
+declare global {
+  // eslint-disable-next-line no-var
+  var mongooseCache: MongooseCache | undefined;
+}
+
+let cached = global.mongooseCache;
 
 if (!cached) {
-  cached = (global as any).mongoose = { conn: null, promise: null }; // if not assing value of this 
+  cached = global.mongooseCache = { conn: null, promise: null };
 }
 
-async function dbConnect() {  // if data base is connected already return this 
-  if (cached.conn) {
-    return cached.conn;
+async function dbConnect() {
+  if (cached!.conn) {
+    return cached!.conn;
   }
 
-  if (!cached.promise) {
-    cached.promise = mongoose.connect(MONGODB_URI!).then((mongoose) => { // if not it will attempent to connect the data base
-      return mongoose;
-    });
+  if (!cached!.promise) {
+    cached!.promise = mongoose.connect(MONGODB_URI!).then((m) => m);
   }
 
-  try {
-    cached.conn = await cached.promise;   // wait for connection once it connected saves in the cached.conn
-  } catch (e) {
-    cached.promise = null;             // if any error like password aor any thing happens it will reset the value of cached to null
-    throw e;
-  }
-
-  return cached.conn;
+  cached!.conn = await cached!.promise;
+  return cached!.conn;
 }
 
 export default dbConnect;
-
 
 
 

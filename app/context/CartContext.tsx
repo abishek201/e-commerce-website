@@ -1,100 +1,91 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";   // importing react and other necessary modules
-import { product as ProductType } from "@/app/types/product";  // importing schema of products
+import React, { createContext, useContext, useState, useEffect } from "react";
+import { product as ProductType } from "@/app/types/product";
 
 export interface CartItem {
-  product: ProductType;                
+  product: ProductType;
   quantity: number;
 }
 
 interface CartContextType {
-  cartItems: CartItem[];                             
-  addToCart: (product: ProductType) => void;
-  removeFromCart: (productId: number) => void;
+  cartItems: CartItem[];
+  addToCart: (product: ProductType, quantity?: number) => void;
+  removeFromCart: (productId: number | string) => void;
   clearCart: () => void;
-
 }
 
-// 1. Safe initialization value
-const CartContext = createContext<CartContextType | undefined>(undefined);  // context type saved in this variable
+const CartContext = createContext<CartContextType | undefined>(undefined);
 
-export function CartProvider({ children }: { children: React.ReactNode }) { //??
-  // 2. State array setup matching correct naming
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
-
- useEffect(() => {
-  const savedCart = localStorage.getItem("cart");
-  if (savedCart && savedCart !== "undefined") {
+export function CartProvider({ children }: { children: React.ReactNode }) {
+  // Read directly from localStorage on initial render
+  const [cartItems, setCartItems] = useState<CartItem[]>(() => {
+    if (typeof window === "undefined") return [];
     try {
-      setCartItems(JSON.parse(savedCart));
-    } catch (e) {
-      console.error("Failed to parse cart from localStorage", e);
-      localStorage.removeItem("cart"); // Clean up corrupted data
+      const savedCart = localStorage.getItem("cart");
+      return savedCart && savedCart !== "undefined" ? JSON.parse(savedCart) : [];
+    } catch {
+      return [];
     }
-  }
-}, []);
+  });
 
   useEffect(() => {
-    
-      localStorage.setItem("cart", JSON.stringify(cartItems));  // this runs when cartitems changes the it stores in the localstorage
-    
+    localStorage.setItem("cart", JSON.stringify(cartItems));
   }, [cartItems]);
 
-  const addToCart = (product: ProductType) => {
+  const addToCart = (product: ProductType, quantityToAdd: number = 1) => {
     setCartItems((prevItems) => {
-      const existingItem = prevItems.find((item) => item.product.id === product.id);  // checks if the product aleredy exist in the cart
-      if (existingItem) {           // if exist increase the quantity by one 
+      const existingItem = prevItems.find(
+        (item) => String(item.product.id) === String(product.id)
+      );
+
+      if (existingItem) {
         return prevItems.map((item) =>
-          item.product.id === product.id
-            ? { ...item, quantity: item.quantity + 1 } // item quantity = 1+1
-            : item  
+          String(item.product.id) === String(product.id)
+            ? { ...item, quantity: item.quantity + quantityToAdd }
+            : item
         );
       }
-      return [...prevItems, { product, quantity: 1 }]; // if it is new item add product to array by quantity 1
+      return [...prevItems, { product, quantity: quantityToAdd }];
     });
   };
 
-
- const removeFromCart = (productId: number | string) => {
-  setCartItems((prevItems) => {
-    // 1. Convert IDs to String to avoid string vs number bugs
-    const existingItem = prevItems.find(
-      (item) => String(item.product.id) === String(productId)
-    );
-
-    // 2. If quantity > 1, decrement quantity
-    if (existingItem && existingItem.quantity > 1) {
-      return prevItems.map((item) =>
-        String(item.product.id) === String(productId)
-          ? { ...item, quantity: item.quantity - 1 }
-          : item
+  const removeFromCart = (productId: number | string) => {
+    setCartItems((prevItems) => {
+      const existingItem = prevItems.find(
+        (item) => String(item.product.id) === String(productId)
       );
-    }
 
-    // 3. If quantity is 1, remove only this product from array
-    return prevItems.filter(
-      (item) => String(item.product.id) !== String(productId)
-    );
-  });
-};
-  
+      if (existingItem && existingItem.quantity > 1) {
+        return prevItems.map((item) =>
+          String(item.product.id) === String(productId)
+            ? { ...item, quantity: item.quantity - 1 }
+            : item
+        );
+      }
+
+      return prevItems.filter(
+        (item) => String(item.product.id) !== String(productId)
+      );
+    });
+  };
 
   const clearCart = () => {
     setCartItems([]);
     localStorage.removeItem("cart");
   };
 
-  //   Provider wrapper blocks
   return (
-    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, clearCart }}>
+    <CartContext.Provider
+      value={{ cartItems, addToCart, removeFromCart, clearCart }}
+    >
       {children}
     </CartContext.Provider>
   );
 }
 
 export function useCart() {
-  const context = useContext(CartContext);                                          // fiunction to store cart contect inside the use cart
+  const context = useContext(CartContext);
   if (!context) throw new Error("useCart must be used within a CartProvider");
   return context;
 }
